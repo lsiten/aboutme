@@ -1,0 +1,64 @@
+ <ion-view view-title="你好！我的大學">
+   <ion-nav-buttons side="left">
+     <button class="button button-icon" ng-click="toggleLeft()">
+       <i class="icon ion-navicon-round"></i>
+     </button>
+    </ion-nav-buttons>
+    <ion-content>
+      <div class="list" ng-show="!isLogin">
+        <div class="item item-button-right">
+          想了解更多內容
+          <button class="button  button-positive" ng-click="GoTologin()">去登錄</button>
+        </div>
+      </div>
+    </ion-content>
+   <ion-side-menus ng-show="isLogin">
+     <ion-side-menu-content >
+       <!--中心內容-->
+       <ion-header-bar class="bar-dark">
+           <button  class="button button-icon"  ng-click="toggleLeft()">
+              <i class="icon ion-navicon-round"></i>
+           </button>
+       </ion-header-bar>
+       <ion-content>
+         <ion-item class="MessageItem" ng-show="activityinfo.haveNewData">
+            您有{{activityinfo.NewDatacount}}條消息更新！
+         </ion-item>
+          <ion-refresher pulling-text="下拉刷新" on-refresh="activityinfoRefresh()"></ion-refresher>
+         <!--列表-->
+         <ion-list>
+           <div class="card" ng-repeat="activity in activities">
+             <div class="item">
+               <h2>{{activity.name}}</h2>
+               <p>
+                <span>畢業學校：{{activity.graduateSchool}}</span>
+               </p>
+             </div>
+            <div class="item item-text-wrap item-image-eric">
+              <img class="imgClass" src="{{activityHost}}{{activity.headSrc}}">
+              <p>
+                <b>大學，我想對你說：</b>{{activity.content}}
+              </p>
+            </div>
+          </div>
+         </ion-list>
+         <ion-infinite-scroll on-infinite="activityinfoloadMore()" distance="1%" ></ion-infinite-scroll>
+       </ion-content>
+     </ion-side-menu-content>
+     <ion-side-menu side="left">
+         <ion-header-bar class="bar-dark">
+           <h1 class="title">活動</h1>
+         </ion-header-bar>
+         <ion-content>
+           <ion-refresher pulling-text="下拉刷新" on-refresh="activityRefresh()"></ion-refresher>
+           <ion-list>
+             <button class="item button-block text-align-left" ng-repeat="activityItem in activityItems" ng-click="getActivityinfoByActivityId(activityItem.id)">
+               {{activityItem.name}}
+             </button>
+           </ion-list>
+           <ion-infinite-scroll ng-if="activity.haveData" on-infinite="activityloadMore()"></ion-infinite-scroll>
+         </ion-content>
+
+     </ion-side-menu>
+   </ion-side-menus>
+</ion-view>

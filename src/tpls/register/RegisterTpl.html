@@ -1,0 +1,48 @@
+<ion-view ng-controller="RegisterCtr">
+    <ion-nav-buttons side="right">
+    <button class="button button-icon" ng-click="goToHome()">
+      <i class="icon ion-home"></i>
+    </button>
+   </ion-nav-buttons>
+    <ion-nav-title>
+        <h1 class="title">註冊</h1>
+    </ion-nav-title>
+
+     <ion-content class="padding">
+        <div class="list">
+         <label class="item item-input">
+            <span class="input-label text-align-right">用户名：</span>
+            <input type="text" name="username" ng-change="CheckValue('username')" ng-model="userRegist.username" placeholder="請輸入用戶名">
+          </label>
+          <label class="item item-errorMessage" ng-show="userRegisterror.username">
+            {{userRegisterrorMessage.username}}
+          </label>
+          <label class="item item-input">
+            <span class="input-label text-align-right">郵箱:</span>
+            <input type="text" name="usermail" ng-change="CheckValue('usermail')" ng-model="userRegist.usermail" placeholder="請輸入密碼">
+          </label>
+          <label class="item item-errorMessage" ng-show="userRegisterror.usermail">
+            {{userRegisterrorMessage.usermail}}
+          </label>
+          <label class="item item-input">
+            <span class="input-label text-align-right">密码：</span>
+            <input type="password" name="password" ng-change="CheckValue('password')" ng-model="userRegist.password" placeholder="請輸入密碼">
+          </label>
+          <label class="item item-errorMessage" ng-show="userRegisterror.password">
+            {{userRegisterrorMessage.password}}
+          </label>
+          <label class="item item-input">
+            <span class="input-label text-align-right">確認密码：</span>
+            <input type="password" name="repassword" ng-model="userRegist.repassword" ng-change="CheckValue('repassword')" placeholder="請輸入密碼">
+          </label>
+          <label class="item item-errorMessage" ng-show="userRegisterror.repassword">
+            {{userRegisterrorMessage.repassword}}
+          </label>
+
+          <button class="button button-full button-positive" ng-click="register()">註冊</button>
+          <p class="text-align-right">
+            <button class="button button-small button-outline button-positive" ng-click="login()">已經有賬號，立即登錄</button>
+          </p>
+      </div>
+    </ion-content>
+</ion-view>
