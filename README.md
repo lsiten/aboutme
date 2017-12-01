@@ -35,11 +35,11 @@ gulp文档 : [http://www.gulpjs.com.cn/docs/getting-started/](http://www.gulpjs.
 ## 界面预览
 
 ![首页](readme/1.jpg)
-
+>
 ![首页侧栏](readme/2.jpg)
-
+>
 ![用户登陆](readme/3.jpg)
-
+>
 ![用户注册](readme/4.jpg)
 
 
