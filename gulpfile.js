@@ -12,16 +12,50 @@ var gulp = require('gulp'),
     //文件发生变化自动刷新
     livereload = require('gulp-livereload'),
     webserver = require('gulp-webserver');
+    var htmlmin = require('gulp-htmlmin');//html压缩组件
+    var clean = require('gulp-clean');//清除文件插件，参考：https://github.com/teambition/gulp-clean
+    var gulpRemoveHtml = require('gulp-remove-html');//标签清除，参考：https://www.npmjs.com/package/gulp-remove-html
+    var removeEmptyLines = require('gulp-remove-empty-lines');//清除空白行，参考：
+//复制文件夹
+gulp.task('copy',  function() {
+    gulp.src('src/framework/**/*')
+        .pipe(gulp.dest('dist/framework'));
+});
+gulp.task('copyimg',  function() {
+    //如果下面执行了md5资源文件img，那么这步可以省略
+    gulp.src('src/img/**/*')
+        .pipe(gulp.dest('dist/img'));
+});
+
+//html压缩
+gulp.task('html',function(){
+    var options = {
+        removeComments: true,//清除HTML注释
+        collapseWhitespace: false,//压缩HTML
+        collapseBooleanAttributes: true,//省略布尔属性的值 <input checked="true"/> ==> <input />
+        removeEmptyAttributes: true,//删除所有空格作属性值 <input id="" /> ==> <input />
+        removeScriptTypeAttributes: true,//删除<script>的type="text/javascript"
+        removeStyleLinkTypeAttributes: true,//删除<style>和<link>的type="text/css"
+        minifyJS: true,//压缩页面JS
+        minifyCSS: true//压缩页面CSS
+    };
+    gulp.src('src/**/*.html')
+        .pipe(gulpRemoveHtml())//清除特定标签
+        .pipe(removeEmptyLines({removeComments: true}))//清除空白行
+        .pipe(htmlmin(options))
+        .pipe(gulp.dest('dist'))
+        .pipe(gulp.src('src').pipe(livereload()));
+});
 
 //less解析
-// gulp.task('LessToCss', function() {
-//     return gulp.src('src/less/**/*.less')
-//         .pipe(plumber({
-//             errorHandler: notify.onError('Error: <%= error.message %>')
-//         }))
-//         .pipe(less())
-//         .pipe(gulp.dest('src/cssTemp'));
-// });
+gulp.task('LessToCss', function() {
+    return gulp.src('src/less/**/*.less')
+        .pipe(plumber({
+            errorHandler: notify.onError('Error: <%= error.message %>')
+        }))
+        .pipe(less())
+        .pipe(gulp.dest('src/css'));
+});
 //自动补全浏览器前缀
 gulp.task('AutoFx', function() {
     return gulp.src('src/css/**/*.css')
@@ -30,12 +64,12 @@ gulp.task('AutoFx', function() {
             cascade: true, //是否美化属性值 默认：true 像这样：
             remove: true //是否去掉不必要的前缀 默认：true
         }))
-        .pipe(gulp.dest('src/cssTemp'));
+        .pipe(gulp.dest('src/css'));
 });
 
 //压缩css
-gulp.task("cssMinTask", ["AutoFx"], function() {
-    gulp.src('src/cssTemp/**/*.css')
+gulp.task("cssMinTask", ["clean:css","LessToCss","AutoFx"], function() {
+    gulp.src('src/css/**/*.css')
         .pipe(cssmin({
             advanced: false, //类型：Boolean 默认：true [是否开启高级优化（合并选择器等）]
             compatibility: 'ie7', //保留ie7及以下兼容写法 类型：String 默认：''or'*' [启用兼容模式； 'ie7'：IE7兼容模式，'ie8'：IE8兼容模式，'*'：IE9+兼容模式]
@@ -64,24 +98,28 @@ gulp.task('jsminTask', function() {
 });
 //开启服务器
 gulp.task('webserver', function() {
-  gulp.src('src')//设置服务器根目录
+  gulp.src('dist')//设置服务器根目录
     .pipe(webserver({
       livereload: true,
       port:8100,
       open: true
     }));
 });
+//删除Build文件
+gulp.task('clean:css', function (cb) {
+    return gulp.src("src/css", {read: false})
+        .pipe(clean());
+});
 //监控html
 gulp.task("watchHtml",function(){
   gulp.watch(["src/*.html","src/tpls/**/*.html"]).on("change",function(event){
     console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
-    gulp.src('src')
-        .pipe(livereload());
+    gulp.start("html");
   });
 });
 //监控less
 gulp.task("watchless",function(){
-  gulp.watch("src/less/**/*.less",[]).on("change",function(event){
+  gulp.watch("src/**/*.less",[]).on("change",function(event){
     console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
     gulp.start("cssMinTask");
   });
@@ -92,6 +130,6 @@ gulp.task("watchjs",function(){
     console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
   });
 });
-gulp.task('default',["cssMinTask","jsminTask","webserver","watchHtml","watchless","watchjs"],function() {
+gulp.task('default',["copy","copyimg","html","cssMinTask","jsminTask","webserver","watchHtml","watchless","watchjs"],function() {
     livereload.listen({basepath: 'src'});
 });

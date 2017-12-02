@@ -1,1 +1,0 @@
-jQuery(function(){$("input, textarea").placeholder()}),$("#slide-images").carousel({interval:4e3}),$(".panel-heading").mouseenter(function(){var a=$(this).find("a").attr("data-target"),e=$(this).find("a").attr("data-parent");$(e).find(".panel-collapse").removeClass("in"),$(e).find(".panel").removeClass("panelHadIn"),$(this).parent().addClass("panelHadIn"),$(a).addClass("in")});

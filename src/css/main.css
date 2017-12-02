@@ -1,28 +1,16 @@
-div.item-image-eric img{
-  max-width: 100% !important;
+.section {
+  text-align: center;
+  color: #fff;
 }
-.MessageItem{
-    text-align: center;
-    background: #e88822;
-    color: #fff;
-    padding-top: 5px;
-    padding-bottom: 5px;
+.home {
+  background: #421f1f;
 }
-.text-align-right{
-  text-align: right;
+.project {
+  background: #632d01;
 }
-.text-align-left{
-  text-align: left;
+.skill {
+  background: #030580;
 }
-
-.item-errorMessage{
-    padding-top: 5px;
-    padding-bottom: 5px;
-    font-size: 12px;
-    color: red;
-    text-align: center;
-    border-top: none;
-}
-.userFace img{
-  border: 1px #bfbfbf solid;
+.contact {
+  background: #085e05;
 }
