@@ -1,0 +1,16 @@
+.lsite_component_timelist .timelist {
+  display: flex;
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #666;
+}
+.lsite_component_timelist .timelist .title {
+  width: 200px;
+  text-align: right;
+  margin-right: 10px;
+}
+.lsite_component_timelist .timelist .content {
+  flex: 1;
+  text-align: left;
+}

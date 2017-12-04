@@ -1,0 +1,20 @@
+.lsite_component_point .point {
+  display: block;
+  background-color: #ccc;
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+}
+.lsite_component_point .point .name {
+  height: 30px;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  margin-top: -15px;
+  font-size: 14px;
+  color: #fff;
+}
+.lsite_component_point .point .name .pre {
+  font-size: 12px;
+}
